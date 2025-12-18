@@ -13,7 +13,7 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4.10"
-toml_edit = { path = "../toml_edit" }
+toml_edit = { package = "toml_edit_v1_0_0", path = "../toml_edit" }
 
 [[bin]]
 name = "parse_document"

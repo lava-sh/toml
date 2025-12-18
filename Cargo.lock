@@ -812,7 +812,7 @@ dependencies = [
  "serde-untagged",
  "serde_core",
  "serde_derive",
- "toml 0.9.9+spec-1.0.0",
+ "toml_v1_0_0",
 ]
 
 [[package]]
@@ -898,30 +898,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "toml"
-version = "0.9.9+spec-1.0.0"
-dependencies = [
- "anstream",
- "anstyle",
- "foldhash",
- "indexmap 2.11.4",
- "itertools",
- "serde",
- "serde-untagged",
- "serde_core",
- "serde_json",
- "serde_spanned",
- "snapbox",
- "toml-test-data",
- "toml-test-harness",
- "toml_datetime",
- "toml_parser",
- "toml_writer",
- "walkdir",
- "winnow",
-]
-
-[[package]]
 name = "toml-test"
 version = "2.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -964,10 +940,10 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_spanned",
- "toml 0.5.11",
- "toml 0.9.9+spec-1.0.0",
- "toml_edit",
+ "toml",
+ "toml_edit_v1_0_0",
  "toml_parser",
+ "toml_v1_0_0",
 ]
 
 [[package]]
@@ -979,7 +955,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "toml_edit"
+name = "toml_edit_fuzz"
+version = "0.0.0"
+dependencies = [
+ "libfuzzer-sys",
+ "toml_edit_v1_0_0",
+]
+
+[[package]]
+name = "toml_edit_v1_0_0"
 version = "0.23.10+spec-1.0.0"
 dependencies = [
  "anstream",
@@ -992,22 +976,14 @@ dependencies = [
  "serde_json",
  "serde_spanned",
  "snapbox",
- "toml 0.9.9+spec-1.0.0",
  "toml-test-data",
  "toml-test-harness",
  "toml_datetime",
  "toml_parser",
+ "toml_v1_0_0",
  "toml_writer",
  "walkdir",
  "winnow",
-]
-
-[[package]]
-name = "toml_edit_fuzz"
-version = "0.0.0"
-dependencies = [
- "libfuzzer-sys",
- "toml_edit",
 ]
 
 [[package]]
@@ -1022,12 +998,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "toml_v1_0_0"
+version = "0.9.9+spec-1.0.0"
+dependencies = [
+ "anstream",
+ "anstyle",
+ "foldhash",
+ "indexmap 2.11.4",
+ "itertools",
+ "serde",
+ "serde-untagged",
+ "serde_core",
+ "serde_json",
+ "serde_spanned",
+ "snapbox",
+ "toml-test-data",
+ "toml-test-harness",
+ "toml_datetime",
+ "toml_parser",
+ "toml_writer",
+ "walkdir",
+ "winnow",
+]
+
+[[package]]
 name = "toml_writer"
 version = "1.0.5+spec-1.0.0"
 dependencies = [
  "proptest",
  "snapbox",
- "toml 0.5.11",
+ "toml",
 ]
 
 [[package]]

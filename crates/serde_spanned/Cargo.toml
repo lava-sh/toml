@@ -36,7 +36,7 @@ serde_core = { version = "1.0.225", optional = true, default-features = false }
 serde = "1"
 serde_derive = "1"
 serde-untagged = "0.1"
-toml = { path = "../toml" }
+toml = { package = "toml_v1_0_0" ,path = "../toml" }
 
 [lints]
 workspace = true
