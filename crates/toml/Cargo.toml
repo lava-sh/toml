@@ -47,6 +47,9 @@ unbounded = []
 # This allows data to be read into a Value and written back to a TOML string
 # while preserving the order of map keys in the input.
 preserve_order = ["dep:indexmap", "std"]
+#
+simd_toml_parser = ["toml_parser?/simd"]
+unsafe_toml_parser = ["toml_parser?/unsafe"]
 
 [dependencies]
 serde_core = { version = "1.0.225", default-features = false, features = ["alloc"], optional = true }
