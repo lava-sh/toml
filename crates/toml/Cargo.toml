@@ -1,5 +1,5 @@
 [package]
-name = "toml_v1_0_0"
+name = "toml_v1"
 version = "0.9.9+spec-1.0.0"
 description = """
 A native Rust encoder and decoder of TOML-formatted files and streams. Provides

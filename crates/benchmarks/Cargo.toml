@@ -19,9 +19,9 @@ fast_hash = ["toml/fast_hash"]
 serde = { version = "1.0.225", features = ["derive"] }
 
 [dev-dependencies]
-toml = { package = "toml_v1_0_0" ,path = "../toml" }
+toml = { package = "toml_v1" ,path = "../toml" }
 toml_parser = { path = "../toml_parser" }
-toml_edit = { package = "toml_edit_v1_0_0", path = "../toml_edit", features = ["serde"] }
+toml_edit = { package = "toml_edit_v1", path = "../toml_edit", features = ["serde"] }
 toml_old = { version = "0.5.11", package = "toml" }
 serde_json = "1.0.145"
 lexopt = "0.3.1"

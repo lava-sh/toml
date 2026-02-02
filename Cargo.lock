@@ -812,7 +812,7 @@ dependencies = [
  "serde-untagged",
  "serde_core",
  "serde_derive",
- "toml_v1_0_0",
+ "toml_v1",
 ]
 
 [[package]]
@@ -941,9 +941,9 @@ dependencies = [
  "serde_json",
  "serde_spanned",
  "toml",
- "toml_edit_v1_0_0",
+ "toml_edit_v1",
  "toml_parser",
- "toml_v1_0_0",
+ "toml_v1",
 ]
 
 [[package]]
@@ -959,11 +959,11 @@ name = "toml_edit_fuzz"
 version = "0.0.0"
 dependencies = [
  "libfuzzer-sys",
- "toml_edit_v1_0_0",
+ "toml_edit_v1",
 ]
 
 [[package]]
-name = "toml_edit_v1_0_0"
+name = "toml_edit_v1"
 version = "0.23.10+spec-1.0.0"
 dependencies = [
  "anstream",
@@ -980,7 +980,7 @@ dependencies = [
  "toml-test-harness",
  "toml_datetime",
  "toml_parser",
- "toml_v1_0_0",
+ "toml_v1",
  "toml_writer",
  "walkdir",
  "winnow",
@@ -998,7 +998,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "toml_v1_0_0"
+name = "toml_v1"
 version = "0.9.9+spec-1.0.0"
 dependencies = [
  "anstream",

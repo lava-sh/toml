@@ -1,5 +1,5 @@
 [package]
-name = "toml_edit_v1_0_0"
+name = "toml_edit_v1"
 version = "0.23.10+spec-1.0.0"
 description = "Yet another format-preserving TOML parser."
 categories = ["encoding", "parser-implementations", "parsing", "config"]
@@ -58,7 +58,7 @@ snapbox = "0.6.21"
 proptest = "1.7.0"
 walkdir = "2.5.0"
 serde_spanned = { path = "../serde_spanned" }
-toml_types = { path = "../toml", package = "toml_v1_0_0", default-features = false, features = ["serde", "preserve_order"] }
+toml_types = { path = "../toml", package = "toml_v1", default-features = false, features = ["serde", "preserve_order"] }
 serde-untagged = "0.1.9"
 
 [[test]]

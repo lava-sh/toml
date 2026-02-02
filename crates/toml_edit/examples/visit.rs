@@ -1,9 +1,9 @@
 //! Example for how to use `VisitMut` to iterate over a table.
 
 use std::collections::BTreeSet;
-use toml_edit::visit::{visit_table_like_kv, Visit};
-use toml_edit::visit_mut::{visit_table_like_kv_mut, visit_table_mut, VisitMut};
-use toml_edit::{Array, DocumentMut, InlineTable, Item, KeyMut, Table, Value};
+use toml_edit_v1::visit::{visit_table_like_kv, Visit};
+use toml_edit_v1::visit_mut::{visit_table_like_kv_mut, visit_table_mut, VisitMut};
+use toml_edit_v1::{Array, DocumentMut, InlineTable, Item, KeyMut, Table, Value};
 
 /// This models the visit state for dependency keys in a `Cargo.toml`.
 ///
