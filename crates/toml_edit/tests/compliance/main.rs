@@ -21,5 +21,5 @@ macro_rules! parse_value {
 mod invalid;
 mod parse;
 
-use toml_edit::DocumentMut as RustDocument;
-use toml_edit::Value as RustValue;
+use toml_edit_v1::DocumentMut as RustDocument;
+use toml_edit_v1::Value as RustValue;

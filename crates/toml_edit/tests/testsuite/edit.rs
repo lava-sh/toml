@@ -3,7 +3,7 @@ use std::iter::FromIterator;
 use snapbox::assert_data_eq;
 use snapbox::prelude::*;
 use snapbox::str;
-use toml_edit::{array, table, value, DocumentMut, Item, Key, Table, Value};
+use toml_edit_v1::{array, table, value, DocumentMut, Item, Key, Table, Value};
 
 macro_rules! parse_key {
     ($s:expr) => {{
@@ -1375,7 +1375,7 @@ src.git = "https://github.com/nixos/nixpkgs"
 #[test]
 fn sorting_with_references() {
     let values = vec!["foo", "qux", "bar"];
-    let mut array = toml_edit::Array::from_iter(values);
+    let mut array = toml_edit_v1::Array::from_iter(values);
     array.sort_by(|lhs, rhs| lhs.as_str().cmp(&rhs.as_str()));
 }
 
@@ -1541,7 +1541,7 @@ fn despan_keys() {
     let table = doc.as_table_mut();
     table.insert_formatted(
         &key,
-        Item::Value(Value::Integer(toml_edit::Formatted::new(2))),
+        Item::Value(Value::Integer(toml_edit_v1::Formatted::new(2))),
     );
 
     assert_eq!(doc.to_string(), "aaaaaa = 1\nbbb = 2\n");

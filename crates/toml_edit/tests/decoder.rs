@@ -12,26 +12,26 @@ impl toml_test_harness::Decoder for Decoder {
     ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
         let data = std::str::from_utf8(data).map_err(toml_test_harness::Error::new)?;
         let document = data
-            .parse::<toml_edit::DocumentMut>()
+            .parse::<toml_edit_v1::DocumentMut>()
             .map_err(toml_test_harness::Error::new)?;
         document_to_decoded(&document)
     }
 }
 
 fn document_to_decoded(
-    value: &toml_edit::DocumentMut,
+    value: &toml_edit_v1::DocumentMut,
 ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
     table_to_decoded(value)
 }
 
 fn item_to_decoded(
-    value: &toml_edit::Item,
+    value: &toml_edit_v1::Item,
 ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
     match value {
-        toml_edit::Item::None => unreachable!("No nones"),
-        toml_edit::Item::Value(v) => value_to_decoded(v),
-        toml_edit::Item::Table(v) => table_to_decoded(v),
-        toml_edit::Item::ArrayOfTables(v) => {
+        toml_edit_v1::Item::None => unreachable!("No nones"),
+        toml_edit_v1::Item::Value(v) => value_to_decoded(v),
+        toml_edit_v1::Item::Table(v) => table_to_decoded(v),
+        toml_edit_v1::Item::ArrayOfTables(v) => {
             let v: Result<_, toml_test_harness::Error> = v.iter().map(table_to_decoded).collect();
             Ok(toml_test_harness::DecodedValue::Array(v?))
         }
@@ -39,19 +39,19 @@ fn item_to_decoded(
 }
 
 fn value_to_decoded(
-    value: &toml_edit::Value,
+    value: &toml_edit_v1::Value,
 ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
     match value {
-        toml_edit::Value::Integer(v) => Ok(toml_test_harness::DecodedValue::Scalar(
+        toml_edit_v1::Value::Integer(v) => Ok(toml_test_harness::DecodedValue::Scalar(
             toml_test_harness::DecodedScalar::from(*v.value()),
         )),
-        toml_edit::Value::String(v) => Ok(toml_test_harness::DecodedValue::Scalar(
+        toml_edit_v1::Value::String(v) => Ok(toml_test_harness::DecodedValue::Scalar(
             toml_test_harness::DecodedScalar::from(v.value()),
         )),
-        toml_edit::Value::Float(v) => Ok(toml_test_harness::DecodedValue::Scalar(
+        toml_edit_v1::Value::Float(v) => Ok(toml_test_harness::DecodedValue::Scalar(
             toml_test_harness::DecodedScalar::from(*v.value()),
         )),
-        toml_edit::Value::Datetime(v) => {
+        toml_edit_v1::Value::Datetime(v) => {
             let v = v.value();
             let value = v.to_string();
             let value = match (v.date.is_some(), v.time.is_some(), v.offset.is_some()) {
@@ -63,19 +63,19 @@ fn value_to_decoded(
             };
             Ok(toml_test_harness::DecodedValue::Scalar(value))
         }
-        toml_edit::Value::Boolean(v) => Ok(toml_test_harness::DecodedValue::Scalar(
+        toml_edit_v1::Value::Boolean(v) => Ok(toml_test_harness::DecodedValue::Scalar(
             toml_test_harness::DecodedScalar::from(*v.value()),
         )),
-        toml_edit::Value::Array(v) => {
+        toml_edit_v1::Value::Array(v) => {
             let v: Result<_, toml_test_harness::Error> = v.iter().map(value_to_decoded).collect();
             Ok(toml_test_harness::DecodedValue::Array(v?))
         }
-        toml_edit::Value::InlineTable(v) => inline_table_to_decoded(v),
+        toml_edit_v1::Value::InlineTable(v) => inline_table_to_decoded(v),
     }
 }
 
 fn table_to_decoded(
-    value: &toml_edit::Table,
+    value: &toml_edit_v1::Table,
 ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
     let table: Result<_, toml_test_harness::Error> = value
         .iter()
@@ -89,7 +89,7 @@ fn table_to_decoded(
 }
 
 fn inline_table_to_decoded(
-    value: &toml_edit::InlineTable,
+    value: &toml_edit_v1::InlineTable,
 ) -> Result<toml_test_harness::DecodedValue, toml_test_harness::Error> {
     let table: Result<_, toml_test_harness::Error> = value
         .iter()

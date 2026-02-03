@@ -22,29 +22,29 @@ mod ser_to_string_pretty;
 mod spanned;
 
 use serde_spanned::Spanned;
-use toml_edit::de::from_str;
-use toml_edit::ser::to_string;
-use toml_edit::ser::to_string_pretty;
-use toml_edit::Date;
-use toml_edit::Datetime;
-use toml_edit::Time;
+use toml_edit_v1::de::from_str;
+use toml_edit_v1::ser::to_string;
+use toml_edit_v1::ser::to_string_pretty;
+use toml_edit_v1::Date;
+use toml_edit_v1::Datetime;
+use toml_edit_v1::Time;
 
 use toml_types::Table as SerdeDocument;
 use toml_types::Table as SerdeTable;
 use toml_types::Value as SerdeValue;
 
-fn value_from_str<T>(s: &'_ str) -> Result<T, toml_edit::de::Error>
+fn value_from_str<T>(s: &'_ str) -> Result<T, toml_edit_v1::de::Error>
 where
     T: serde::de::DeserializeOwned,
 {
-    T::deserialize(s.parse::<toml_edit::de::ValueDeserializer>().unwrap())
+    T::deserialize(s.parse::<toml_edit_v1::de::ValueDeserializer>().unwrap())
 }
 
-fn to_string_value<T>(value: &T) -> Result<String, toml_edit::ser::Error>
+fn to_string_value<T>(value: &T) -> Result<String, toml_edit_v1::ser::Error>
 where
     T: serde::ser::Serialize + ?Sized,
 {
-    let serializer = toml_edit::ser::ValueSerializer::new();
+    let serializer = toml_edit_v1::ser::ValueSerializer::new();
     let value = value.serialize(serializer)?;
     let output = value.to_string();
     Ok(output)

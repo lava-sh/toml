@@ -21,31 +21,31 @@ mod ser_to_string;
 mod ser_to_string_pretty;
 mod spanned;
 
-use toml::from_str;
-use toml::to_string;
-use toml::to_string_pretty;
-use toml::value::Date;
-use toml::value::Datetime;
-use toml::value::Time;
-use toml::Spanned;
+use toml_v1::from_str;
+use toml_v1::to_string;
+use toml_v1::to_string_pretty;
+use toml_v1::value::Date;
+use toml_v1::value::Datetime;
+use toml_v1::value::Time;
+use toml_v1::Spanned;
 
-use toml::Table as SerdeDocument;
-use toml::Table as SerdeTable;
-use toml::Value as SerdeValue;
+use toml_v1::Table as SerdeDocument;
+use toml_v1::Table as SerdeTable;
+use toml_v1::Value as SerdeValue;
 
-fn value_from_str<T>(s: &'_ str) -> Result<T, toml::de::Error>
+fn value_from_str<T>(s: &'_ str) -> Result<T, toml_v1::de::Error>
 where
     T: serde::de::DeserializeOwned,
 {
-    T::deserialize(toml::de::ValueDeserializer::parse(s)?)
+    T::deserialize(toml_v1::de::ValueDeserializer::parse(s)?)
 }
 
-fn to_string_value<T>(value: &T) -> Result<String, toml::ser::Error>
+fn to_string_value<T>(value: &T) -> Result<String, toml_v1::ser::Error>
 where
     T: serde::ser::Serialize + ?Sized,
 {
     let mut output = String::new();
-    let serializer = toml::ser::ValueSerializer::new(&mut output);
+    let serializer = toml_v1::ser::ValueSerializer::new(&mut output);
     value.serialize(serializer)?;
     Ok(output)
 }
