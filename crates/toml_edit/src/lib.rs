@@ -122,7 +122,7 @@ pub use crate::repr::{Decor, Formatted, Repr};
 pub use crate::table::{
     Entry, IntoIter, Iter, IterMut, OccupiedEntry, Table, TableLike, VacantEntry,
 };
-pub use crate::value::Value;
+pub use crate::value::{Value, BigInteger};
 pub use toml_datetime::*;
 
 // Prevent users from some traits.
