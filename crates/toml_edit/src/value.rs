@@ -29,11 +29,13 @@ pub enum Value {
     InlineTable(InlineTable),
 }
 
+#[allow(missing_docs)]
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct BigInteger {
     raw: RawString,
 }
 
+#[allow(missing_docs)]
 impl BigInteger {
     pub fn new(raw: impl Into<RawString>) -> Self {
         Self { raw: raw.into() }
