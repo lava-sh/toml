@@ -194,6 +194,7 @@ pub(crate) fn encode_value(
     match this {
         Value::String(repr) => encode_formatted(repr, buf, input, default_decor),
         Value::Integer(repr) => encode_formatted(repr, buf, input, default_decor),
+        Value::BigNum(i) => encode_formatted(i, buf, input, default_decor),
         Value::Float(repr) => encode_formatted(repr, buf, input, default_decor),
         Value::Boolean(repr) => encode_formatted(repr, buf, input, default_decor),
         Value::Datetime(repr) => encode_formatted(repr, buf, input, default_decor),
