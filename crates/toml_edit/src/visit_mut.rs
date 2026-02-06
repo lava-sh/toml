@@ -9,7 +9,7 @@
 //! input by invoking the right visitor method of each of its fields.
 //!
 //! ```
-//! # use toml_edit::{Item, ArrayOfTables, Table, Value};
+//! # use toml_edit_v1::{Item, ArrayOfTables, Table, Value};
 //!
 //! pub trait VisitMut {
 //!     /* ... */
@@ -47,8 +47,8 @@
 //! ```
 //! # #[cfg(feature = "parse")] {
 //! # #[cfg(feature = "display")] {
-//! # use toml_edit::*;
-//! use toml_edit::visit_mut::*;
+//! # use toml_edit_v1::*;
+//! use toml_edit_v1::visit_mut::*;
 //!
 //! struct FloatToString;
 //!
@@ -231,6 +231,7 @@ where
     match node {
         Value::String(s) => v.visit_string_mut(s),
         Value::Integer(i) => v.visit_integer_mut(i),
+        Value::BigNum(_) => {}
         Value::Float(f) => v.visit_float_mut(f),
         Value::Boolean(b) => v.visit_boolean_mut(b),
         Value::Datetime(dt) => v.visit_datetime_mut(dt),
