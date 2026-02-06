@@ -124,6 +124,13 @@ pub trait ValueRepr: crate::private::Sealed {
     fn to_repr(&self) -> Repr;
 }
 
+#[cfg(feature = "display")]
+impl ValueRepr for crate::value::BigInteger {
+    fn to_repr(&self) -> Repr {
+        Repr::new_unchecked(self.as_raw().clone())
+    }
+}
+
 #[cfg(not(feature = "display"))]
 mod inner {
     use super::ValueRepr;
@@ -133,6 +140,8 @@ mod inner {
     impl ValueRepr for f64 {}
     impl ValueRepr for bool {}
     impl ValueRepr for toml_datetime::Datetime {}
+    //
+    impl ValueRepr for crate::value::BigInteger {}
 }
 
 /// A TOML [`Value`][crate::Value] encoded as a `&str`
@@ -272,12 +281,5 @@ impl std::fmt::Debug for Decor {
             None => d.field("suffix", &"default"),
         };
         d.finish()
-    }
-}
-
-#[cfg(feature = "display")]
-impl ValueRepr for crate::value::BigInteger {
-    fn to_repr(&self) -> Repr {
-        Repr::new_unchecked(self.as_raw().clone())
     }
 }
