@@ -2,10 +2,6 @@
 pub(crate) struct Decoder;
 
 impl toml_test_harness::Decoder for Decoder {
-    fn name(&self) -> &str {
-        "toml_edit"
-    }
-
     fn decode(
         &self,
         data: &[u8],
@@ -15,6 +11,10 @@ impl toml_test_harness::Decoder for Decoder {
             .parse::<toml_edit_v1::DocumentMut>()
             .map_err(toml_test_harness::Error::new)?;
         document_to_decoded(&document)
+    }
+
+    fn name(&self) -> &str {
+        "toml_edit"
     }
 }
 
