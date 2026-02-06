@@ -30,7 +30,7 @@ use crate::de::TableDeserializer;
 /// }
 ///
 /// let value = r#"{ title = 'TOML Example', owner = { name = 'Lisa' } }"#;
-/// let deserializer = value.parse::<toml_edit::de::ValueDeserializer>().unwrap();
+/// let deserializer = value.parse::<toml_edit_v1::de::ValueDeserializer>().unwrap();
 /// let config = Config::deserialize(deserializer).unwrap();
 /// assert_eq!(config.title, "TOML Example");
 /// assert_eq!(config.owner.name, "Lisa");

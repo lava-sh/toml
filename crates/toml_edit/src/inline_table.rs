@@ -159,7 +159,7 @@ impl InlineTable {
     /// ```
     /// # #[cfg(feature = "parse")] {
     /// # #[cfg(feature = "display")] {
-    /// use toml_edit::DocumentMut;
+    /// use toml_edit_v1::DocumentMut;
     /// let mut doc = "[a]\n[a.b]\n".parse::<DocumentMut>().expect("invalid toml");
     ///
     /// doc["a"].as_table_mut().unwrap().set_implicit(true);
@@ -616,7 +616,7 @@ impl<'a> InlineEntry<'a> {
     /// # Examples
     ///
     /// ```
-    /// use toml_edit::Table;
+    /// use toml_edit_v1::Table;
     ///
     /// let mut map = Table::new();
     ///
@@ -659,7 +659,7 @@ impl<'a> InlineOccupiedEntry<'a> {
     /// # Examples
     ///
     /// ```
-    /// use toml_edit::Table;
+    /// use toml_edit_v1::Table;
     ///
     /// let mut map = Table::new();
     ///
@@ -714,7 +714,7 @@ impl<'a> InlineVacantEntry<'a> {
     /// # Examples
     ///
     /// ```
-    /// use toml_edit::Table;
+    /// use toml_edit_v1::Table;
     ///
     /// let mut map = Table::new();
     ///

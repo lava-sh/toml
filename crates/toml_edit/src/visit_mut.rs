@@ -9,7 +9,7 @@
 //! input by invoking the right visitor method of each of its fields.
 //!
 //! ```
-//! # use toml_edit::{Item, ArrayOfTables, Table, Value};
+//! # use toml_edit_v1::{Item, ArrayOfTables, Table, Value};
 //!
 //! pub trait VisitMut {
 //!     /* ... */
@@ -47,8 +47,8 @@
 //! ```
 //! # #[cfg(feature = "parse")] {
 //! # #[cfg(feature = "display")] {
-//! # use toml_edit::*;
-//! use toml_edit::visit_mut::*;
+//! # use toml_edit_v1::*;
+//! use toml_edit_v1::visit_mut::*;
 //!
 //! struct FloatToString;
 //!

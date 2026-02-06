@@ -11,7 +11,7 @@
 //! ```rust
 //! # #[cfg(feature = "parse")] {
 //! # #[cfg(feature = "display")] {
-//! use toml_edit::{DocumentMut, value};
+//! use toml_edit_v1::{DocumentMut, value};
 //!
 //! let toml = r#"
 //! "hello" = 'toml!' # comment
@@ -39,8 +39,8 @@
 //! ```rust
 //! # #[cfg(feature = "display")] {
 //! # #[cfg(feature = "parse")] {
-//! let mut doc = toml_edit::DocumentMut::new();
-//! doc["foo"] = toml_edit::value("bar");
+//! let mut doc = toml_edit_v1::DocumentMut::new();
+//! doc["foo"] = toml_edit_v1::value("bar");
 //! let expected = r#"foo = "bar"
 //! "#;
 //! assert_eq!(doc.to_string(), expected);
@@ -52,8 +52,8 @@
 //! ```rust
 //! # #[cfg(feature = "display")] {
 //! # #[cfg(feature = "parse")] {
-//! let mut doc = toml_edit::DocumentMut::new();
-//! doc["foo"] = "'bar'".parse::<toml_edit::Item>().unwrap();
+//! let mut doc = toml_edit_v1::DocumentMut::new();
+//! doc["foo"] = "'bar'".parse::<toml_edit_v1::Item>().unwrap();
 //! let expected = r#"foo = 'bar'
 //! "#;
 //! assert_eq!(doc.to_string(), expected);

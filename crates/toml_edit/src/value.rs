@@ -174,7 +174,7 @@ impl Value {
     /// Get the decoration of the value.
     /// # Example
     /// ```rust
-    /// let v = toml_edit::Value::from(true);
+    /// let v = toml_edit_v1::Value::from(true);
     /// assert_eq!(v.decor().suffix(), None);
     ///```
     pub fn decor_mut(&mut self) -> &mut Decor {
@@ -193,7 +193,7 @@ impl Value {
     /// Get the decoration of the value.
     /// # Example
     /// ```rust
-    /// let v = toml_edit::Value::from(true);
+    /// let v = toml_edit_v1::Value::from(true);
     /// assert_eq!(v.decor().suffix(), None);
     ///```
     pub fn decor(&self) -> &Decor {
@@ -213,7 +213,7 @@ impl Value {
     /// # Example
     /// ```rust
     /// # #[cfg(feature = "display")] {
-    /// let mut v = toml_edit::Value::from(42);
+    /// let mut v = toml_edit_v1::Value::from(42);
     /// assert_eq!(&v.to_string(), "42");
     /// let d = v.decorated(" ", " ");
     /// assert_eq!(&d.to_string(), " 42 ");

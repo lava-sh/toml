@@ -43,7 +43,7 @@ pub use value::ValueDeserializer;
 ///     name: String,
 /// }
 ///
-/// let config: Config = toml_edit::de::from_str(r#"
+/// let config: Config = toml_edit_v1::de::from_str(r#"
 ///     title = 'TOML Example'
 ///
 ///     [owner]
