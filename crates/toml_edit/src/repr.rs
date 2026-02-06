@@ -274,3 +274,10 @@ impl std::fmt::Debug for Decor {
         d.finish()
     }
 }
+
+#[cfg(feature = "display")]
+impl ValueRepr for crate::value::BigInteger {
+    fn to_repr(&self) -> Repr {
+        Repr::new_unchecked(self.as_raw().clone())
+    }
+}

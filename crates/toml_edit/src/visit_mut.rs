@@ -231,6 +231,7 @@ where
     match node {
         Value::String(s) => v.visit_string_mut(s),
         Value::Integer(i) => v.visit_integer_mut(i),
+        Value::BigInteger(_) => {}
         Value::Float(f) => v.visit_float_mut(f),
         Value::Boolean(b) => v.visit_boolean_mut(b),
         Value::Datetime(dt) => v.visit_datetime_mut(dt),

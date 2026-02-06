@@ -214,6 +214,7 @@ where
     match node {
         Value::String(s) => v.visit_string(s),
         Value::Integer(i) => v.visit_integer(i),
+        Value::BigInteger(_) => {}
         Value::Float(f) => v.visit_float(f),
         Value::Boolean(b) => v.visit_boolean(b),
         Value::Datetime(dt) => v.visit_datetime(dt),
