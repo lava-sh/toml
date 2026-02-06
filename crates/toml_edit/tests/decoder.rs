@@ -46,7 +46,7 @@ fn value_to_decoded(
             toml_test_harness::DecodedScalar::from(*v.value()),
         )),
         #[allow(clippy::todo)]
-        &toml_edit_v1::Value::BigInteger(_) => todo!(),
+        &toml_edit_v1::Value::BigNum(_) => todo!(),
         toml_edit_v1::Value::String(v) => Ok(toml_test_harness::DecodedValue::Scalar(
             toml_test_harness::DecodedScalar::from(v.value()),
         )),

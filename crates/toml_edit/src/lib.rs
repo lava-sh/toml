@@ -122,7 +122,7 @@ pub use crate::repr::{Decor, Formatted, Repr};
 pub use crate::table::{
     Entry, IntoIter, Iter, IterMut, OccupiedEntry, Table, TableLike, VacantEntry,
 };
-pub use crate::value::{BigInteger, Value};
+pub use crate::value::{BigNum, Value};
 pub use toml_datetime::*;
 
 // Prevent users from some traits.
@@ -139,7 +139,7 @@ pub(crate) mod private {
     impl Sealed for crate::Table {}
     impl Sealed for crate::InlineTable {}
     //
-    impl Sealed for crate::value::BigInteger {}
+    impl Sealed for crate::value::BigNum {}
 }
 
 #[doc = include_str!("../README.md")]
