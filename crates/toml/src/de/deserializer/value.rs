@@ -31,7 +31,7 @@ use crate::de::Error;
 /// }
 ///
 /// let value = r#"{ title = 'TOML Example', owner = { name = 'Lisa' } }"#;
-/// let deserializer = toml::de::ValueDeserializer::parse(value).unwrap();
+/// let deserializer = toml_v1::de::ValueDeserializer::parse(value).unwrap();
 /// let config = Config::deserialize(deserializer).unwrap();
 /// assert_eq!(config.title, "TOML Example");
 /// assert_eq!(config.owner.name, "Lisa");
