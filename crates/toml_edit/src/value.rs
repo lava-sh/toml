@@ -15,7 +15,7 @@ pub enum Value {
     String(Formatted<String>),
     /// A 64-bit integer value.
     Integer(Formatted<i64>),
-    /// An arbitrary-size integer value
+    /// An arbitrary-size integer value.
     BigInteger(Formatted<BigInteger>),
     /// A 64-bit float value.
     Float(Formatted<f64>),
