@@ -68,6 +68,8 @@ impl<'de> serde_core::Deserializer<'de> for ValueDeserializer {
             crate::Item::None => visitor.visit_none(),
             crate::Item::Value(crate::Value::String(v)) => visitor.visit_string(v.into_value()),
             crate::Item::Value(crate::Value::Integer(v)) => visitor.visit_i64(v.into_value()),
+            crate::Item::Value(crate::Value::BigInteger(_)) => unreachable!("`BigInteger` is only used for encoding"),
+
             crate::Item::Value(crate::Value::Float(v)) => visitor.visit_f64(v.into_value()),
             crate::Item::Value(crate::Value::Boolean(v)) => visitor.visit_bool(v.into_value()),
             crate::Item::Value(crate::Value::Datetime(v)) => {
