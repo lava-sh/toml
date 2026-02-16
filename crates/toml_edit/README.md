@@ -14,7 +14,7 @@ relative order* of items.
 ## Example
 
 ```rust
-use toml_edit::{DocumentMut, value};
+use toml_edit_v1::{DocumentMut, value};
 
 fn main() {
     let toml = r#"

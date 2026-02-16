@@ -64,7 +64,7 @@ where
 ///     },
 /// };
 ///
-/// let toml = toml_edit::ser::to_string(&config).unwrap();
+/// let toml = toml_edit_v1::ser::to_string(&config).unwrap();
 /// println!("{}", toml)
 /// ```
 #[cfg(feature = "display")]

@@ -19,7 +19,7 @@
 //!
 #![cfg_attr(not(feature = "default"), doc = " ```ignore")]
 #![cfg_attr(feature = "default", doc = " ```")]
-//! # use toml::value::{Datetime, Array, Table};
+//! # use toml_v1::value::{Datetime, Array, Table};
 //! pub enum Value {
 //!     String(String),
 //!     Integer(i64),
@@ -37,7 +37,7 @@
 //!
 #![cfg_attr(not(feature = "default"), doc = " ```ignore")]
 #![cfg_attr(feature = "default", doc = " ```")]
-//! use toml::Table;
+//! use toml_v1::Table;
 //!
 //! let value = "foo = 'bar'".parse::<Table>().unwrap();
 //!
@@ -89,7 +89,7 @@
 //!     travis: Option<String>,
 //! }
 //!
-//! let config: Config = toml::from_str(r#"
+//! let config: Config = toml_v1::from_str(r#"
 //!     ip = '127.0.0.1'
 //!
 //!     [keys]
@@ -131,7 +131,7 @@
 //!     },
 //! };
 //!
-//! let toml = toml::to_string(&config).unwrap();
+//! let toml = toml_v1::to_string(&config).unwrap();
 //! ```
 //!
 //! [TOML]: https://github.com/toml-lang/toml

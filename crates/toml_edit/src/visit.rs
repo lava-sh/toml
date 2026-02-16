@@ -8,7 +8,7 @@
 //! input by invoking the right visitor method of each of its fields.
 //!
 //! ```
-//! # use toml_edit::{Item, ArrayOfTables, Table, Value};
+//! # use toml_edit_v1::{Item, ArrayOfTables, Table, Value};
 //!
 //! pub trait Visit<'doc> {
 //!     /* ... */
@@ -44,8 +44,8 @@
 //!
 //! ```
 //! # #[cfg(feature = "parse")] {
-//! # use toml_edit::*;
-//! use toml_edit::visit::*;
+//! # use toml_edit_v1::*;
+//! use toml_edit_v1::visit::*;
 //!
 //! #[derive(Default)]
 //! struct StringCollector<'doc> {
@@ -214,6 +214,7 @@ where
     match node {
         Value::String(s) => v.visit_string(s),
         Value::Integer(i) => v.visit_integer(i),
+        Value::BigNum(_) => {}
         Value::Float(f) => v.visit_float(f),
         Value::Boolean(b) => v.visit_boolean(b),
         Value::Datetime(dt) => v.visit_datetime(dt),

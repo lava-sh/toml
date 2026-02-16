@@ -45,7 +45,7 @@ use super::SerializeValueArray;
 ///
 /// let value = serde::Serialize::serialize(
 ///     &config,
-///     toml_edit::ser::ValueSerializer::new()
+///     toml_edit_v1::ser::ValueSerializer::new()
 /// ).unwrap();
 /// println!("{}", value)
 /// # }

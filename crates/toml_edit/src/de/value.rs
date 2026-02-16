@@ -30,7 +30,7 @@ use crate::de::TableDeserializer;
 /// }
 ///
 /// let value = r#"{ title = 'TOML Example', owner = { name = 'Lisa' } }"#;
-/// let deserializer = value.parse::<toml_edit::de::ValueDeserializer>().unwrap();
+/// let deserializer = value.parse::<toml_edit_v1::de::ValueDeserializer>().unwrap();
 /// let config = Config::deserialize(deserializer).unwrap();
 /// assert_eq!(config.title, "TOML Example");
 /// assert_eq!(config.owner.name, "Lisa");
@@ -68,6 +68,10 @@ impl<'de> serde_core::Deserializer<'de> for ValueDeserializer {
             crate::Item::None => visitor.visit_none(),
             crate::Item::Value(crate::Value::String(v)) => visitor.visit_string(v.into_value()),
             crate::Item::Value(crate::Value::Integer(v)) => visitor.visit_i64(v.into_value()),
+            crate::Item::Value(crate::Value::BigNum(_)) => {
+                unreachable!("`BigNum` is only used for encoding")
+            }
+
             crate::Item::Value(crate::Value::Float(v)) => visitor.visit_f64(v.into_value()),
             crate::Item::Value(crate::Value::Boolean(v)) => visitor.visit_bool(v.into_value()),
             crate::Item::Value(crate::Value::Datetime(v)) => {

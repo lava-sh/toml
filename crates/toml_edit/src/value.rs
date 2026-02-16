@@ -15,6 +15,8 @@ pub enum Value {
     String(Formatted<String>),
     /// A 64-bit integer value.
     Integer(Formatted<i64>),
+    /// An arbitrary-size number.
+    BigNum(Formatted<BigNum>),
     /// A 64-bit float value.
     Float(Formatted<f64>),
     /// A boolean value.
@@ -27,6 +29,23 @@ pub enum Value {
     InlineTable(InlineTable),
 }
 
+#[allow(missing_docs)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub struct BigNum {
+    raw: RawString,
+}
+
+#[allow(missing_docs)]
+impl BigNum {
+    pub fn new(raw: impl Into<RawString>) -> Self {
+        Self { raw: raw.into() }
+    }
+
+    pub fn as_raw(&self) -> &RawString {
+        &self.raw
+    }
+}
+
 /// Downcasting
 impl Value {
     /// Text description of value type
@@ -34,6 +53,7 @@ impl Value {
         match self {
             Self::String(..) => "string",
             Self::Integer(..) => "integer",
+            Self::BigNum(..) => "integer",
             Self::Float(..) => "float",
             Self::Boolean(..) => "boolean",
             Self::Datetime(..) => "datetime",
@@ -154,13 +174,14 @@ impl Value {
     /// Get the decoration of the value.
     /// # Example
     /// ```rust
-    /// let v = toml_edit::Value::from(true);
+    /// let v = toml_edit_v1::Value::from(true);
     /// assert_eq!(v.decor().suffix(), None);
     ///```
     pub fn decor_mut(&mut self) -> &mut Decor {
         match self {
             Self::String(f) => f.decor_mut(),
             Self::Integer(f) => f.decor_mut(),
+            Self::BigNum(f) => f.decor_mut(),
             Self::Float(f) => f.decor_mut(),
             Self::Boolean(f) => f.decor_mut(),
             Self::Datetime(f) => f.decor_mut(),
@@ -172,13 +193,14 @@ impl Value {
     /// Get the decoration of the value.
     /// # Example
     /// ```rust
-    /// let v = toml_edit::Value::from(true);
+    /// let v = toml_edit_v1::Value::from(true);
     /// assert_eq!(v.decor().suffix(), None);
     ///```
     pub fn decor(&self) -> &Decor {
         match *self {
             Self::String(ref f) => f.decor(),
             Self::Integer(ref f) => f.decor(),
+            Self::BigNum(ref f) => f.decor(),
             Self::Float(ref f) => f.decor(),
             Self::Boolean(ref f) => f.decor(),
             Self::Datetime(ref f) => f.decor(),
@@ -191,7 +213,7 @@ impl Value {
     /// # Example
     /// ```rust
     /// # #[cfg(feature = "display")] {
-    /// let mut v = toml_edit::Value::from(42);
+    /// let mut v = toml_edit_v1::Value::from(42);
     /// assert_eq!(&v.to_string(), "42");
     /// let d = v.decorated(" ", " ");
     /// assert_eq!(&d.to_string(), " 42 ");
@@ -214,6 +236,7 @@ impl Value {
         match self {
             Self::String(f) => f.span(),
             Self::Integer(f) => f.span(),
+            Self::BigNum(f) => f.span(),
             Self::Float(f) => f.span(),
             Self::Boolean(f) => f.span(),
             Self::Datetime(f) => f.span(),
@@ -226,6 +249,7 @@ impl Value {
         match self {
             Self::String(f) => f.despan(input),
             Self::Integer(f) => f.despan(input),
+            Self::BigNum(f) => f.despan(input),
             Self::Float(f) => f.despan(input),
             Self::Boolean(f) => f.despan(input),
             Self::Datetime(f) => f.despan(input),

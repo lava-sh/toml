@@ -23,8 +23,8 @@ impl toml_test_harness::Decoder for Decoder {
             let error = toml_test_harness::Error::new(errors);
             return Err(error);
         }
-        let document =
-            toml_v1::Table::deserialize(toml_v1::de::Deserializer::from(table)).map_err(|mut err| {
+        let document = toml_v1::Table::deserialize(toml_v1::de::Deserializer::from(table))
+            .map_err(|mut err| {
                 err.set_input(Some(data));
                 toml_test_harness::Error::new(err)
             })?;

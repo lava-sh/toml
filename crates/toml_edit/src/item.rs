@@ -412,7 +412,7 @@ impl std::fmt::Display for Item {
 /// ```rust
 /// # #[cfg(feature = "display")] {
 /// # #[cfg(feature = "parse")] {
-/// # use toml_edit::*;
+/// # use toml_edit_v1::*;
 /// let mut table = Table::default();
 /// let mut array = Array::default();
 /// array.push("hello");

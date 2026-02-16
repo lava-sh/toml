@@ -35,7 +35,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// ```
     pub fn new() -> Self {
         Default::default()
@@ -122,7 +122,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     /// assert_eq!(arr.len(), 2);
@@ -136,7 +136,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// assert!(arr.is_empty());
     ///
     /// arr.push(1);
@@ -169,7 +169,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     /// ```
@@ -183,8 +183,8 @@ impl Array {
     ///
     /// ```rust
     /// # #[cfg(feature = "parse")] {
-    /// let formatted_value = "'literal'".parse::<toml_edit::Value>().unwrap();
-    /// let mut arr = toml_edit::Array::new();
+    /// let formatted_value = "'literal'".parse::<toml_edit_v1::Value>().unwrap();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push_formatted(formatted_value);
     /// # }
     /// ```
@@ -202,7 +202,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     ///
@@ -223,11 +223,11 @@ impl Array {
     ///
     /// ```rust
     /// # #[cfg(feature = "parse")] {
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     ///
-    /// let formatted_value = "'start'".parse::<toml_edit::Value>().unwrap();
+    /// let formatted_value = "'start'".parse::<toml_edit_v1::Value>().unwrap();
     /// arr.insert_formatted(0, formatted_value);
     /// # }
     /// ```
@@ -244,7 +244,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     ///
@@ -271,11 +271,11 @@ impl Array {
     ///
     /// ```rust
     /// # #[cfg(feature = "parse")] {
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     ///
-    /// let formatted_value = "'start'".parse::<toml_edit::Value>().unwrap();
+    /// let formatted_value = "'start'".parse::<toml_edit_v1::Value>().unwrap();
     /// arr.replace_formatted(0, formatted_value);
     /// # }
     /// ```
@@ -291,7 +291,7 @@ impl Array {
     /// # Examples
     ///
     /// ```rust
-    /// let mut arr = toml_edit::Array::new();
+    /// let mut arr = toml_edit_v1::Array::new();
     /// arr.push(1);
     /// arr.push("foo");
     ///

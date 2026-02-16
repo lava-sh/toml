@@ -58,7 +58,9 @@ fn from_decoded_scalar(
     decoded: &toml_test_harness::DecodedScalar,
 ) -> Result<toml_v1::Value, toml_test_harness::Error> {
     match decoded {
-        toml_test_harness::DecodedScalar::String(value) => Ok(toml_v1::Value::String(value.clone())),
+        toml_test_harness::DecodedScalar::String(value) => {
+            Ok(toml_v1::Value::String(value.clone()))
+        }
         toml_test_harness::DecodedScalar::Integer(value) => value
             .parse::<i64>()
             .map_err(toml_test_harness::Error::new)
