@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.0.2] - 2026-02-16
+
+### Fixes
+
+- Error on `-_1`
+- Report correct error location for `0b_1`
+- Report expected value for all digit separator errors
+- Don't double-report on some `1__2` cases
+
 ## [1.0.1] - 2026-02-12
 
 Internal only
@@ -456,7 +465,8 @@ Changes:
 Minor doc fix (#409)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.0.1...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.0.2...HEAD
+[1.0.2]: https://github.com/toml-rs/toml/compare/toml-v1.0.1...toml-v1.0.2
 [1.0.1]: https://github.com/toml-rs/toml/compare/toml-v1.0.0...toml-v1.0.1
 [1.0.0]: https://github.com/toml-rs/toml/compare/toml-v0.9.12...toml-v1.0.0
 [0.9.12]: https://github.com/toml-rs/toml/compare/toml-v0.9.11...toml-v0.9.12
