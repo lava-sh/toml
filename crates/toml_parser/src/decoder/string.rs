@@ -578,12 +578,12 @@ pub(crate) fn decode_ml_basic_string<'i>(
                     );
                 }
             } else {
-                let start = s.offset_from(&raw.as_str());
+                let start = s.offset_from(&raw.as_str()) + 1;
                 error.report_error(
                     ParseError::new("carriage return must be followed by newline")
                         .with_context(Span::new_unchecked(0, raw.len()))
                         .with_expected(&[Expected::Literal("\n")])
-                        .with_unexpected(Span::new_unchecked(start, start + 1)),
+                        .with_unexpected(Span::new_unchecked(start, start)),
                 );
                 let _ = s.next_slice(1);
             }
