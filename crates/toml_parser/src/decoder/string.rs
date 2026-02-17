@@ -210,7 +210,7 @@ pub(crate) fn decode_ml_literal_string<'i>(
                 continue;
             }
 
-            let off = base + i;
+            let off = base + i + 1;
             error.report_error(
                 ParseError::new("carriage return must be followed by newline")
                     .with_context(Span::new_unchecked(0, raw.len()))
