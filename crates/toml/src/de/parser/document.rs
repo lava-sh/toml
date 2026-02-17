@@ -1,11 +1,11 @@
 use serde_spanned::Spanned;
 
 use crate::alloc_prelude::*;
+use crate::de::DeString;
+use crate::de::DeValue;
 use crate::de::parser::key::on_key;
 use crate::de::parser::prelude::*;
 use crate::de::parser::value::value;
-use crate::de::DeString;
-use crate::de::DeValue;
 use crate::de::{DeArray, DeTable};
 use crate::map::Entry;
 
@@ -307,25 +307,24 @@ impl<'i> State<'i> {
             let root = &mut self.root;
             if let (Some(parent_table), Some(key)) =
                 (descend_path(root, &header.path, false, errors), &header.key)
+                && let Some((old_key, old_value)) = parent_table.remove_entry(key)
             {
-                if let Some((old_key, old_value)) = parent_table.remove_entry(key) {
-                    match old_value.into_inner() {
-                        DeValue::Table(t) if t.is_implicit() && !t.is_dotted() => {
-                            self.current_table = t;
-                        }
-                        // Since tables cannot be defined more than once, redefining such tables using a [table] header is not allowed. Likewise, using dotted keys to redefine tables already defined in [table] form is not allowed.
-                        old_value => {
-                            let old_span = get_key_span(&old_key);
-                            let key_span = get_key_span(key);
-                            errors.report_error(
-                                ParseError::new("duplicate key")
-                                    .with_unexpected(key_span)
-                                    .with_context(old_span),
-                            );
+                match old_value.into_inner() {
+                    DeValue::Table(t) if t.is_implicit() && !t.is_dotted() => {
+                        self.current_table = t;
+                    }
+                    // Since tables cannot be defined more than once, redefining such tables using a [table] header is not allowed. Likewise, using dotted keys to redefine tables already defined in [table] form is not allowed.
+                    old_value => {
+                        let old_span = get_key_span(&old_key);
+                        let key_span = get_key_span(key);
+                        errors.report_error(
+                            ParseError::new("duplicate key")
+                                .with_unexpected(key_span)
+                                .with_context(old_span),
+                        );
 
-                            if let DeValue::Table(t) = old_value {
-                                self.current_table = t;
-                            }
+                        if let DeValue::Table(t) = old_value {
+                            self.current_table = t;
                         }
                     }
                 }
@@ -371,7 +370,7 @@ fn descend_path<'t, 'i>(
                 let spanned = entry.into_mut();
                 let old_span = spanned.span();
                 match spanned.as_mut() {
-                    DeValue::Array(ref mut array) => {
+                    DeValue::Array(array) => {
                         if !array.is_array_of_tables() {
                             let old_span =
                                 toml_parser::Span::new_unchecked(old_span.start, old_span.end);
@@ -409,7 +408,7 @@ fn descend_path<'t, 'i>(
                             }
                         }
                     }
-                    DeValue::Table(ref mut sweet_child_of_mine) => {
+                    DeValue::Table(sweet_child_of_mine) => {
                         if sweet_child_of_mine.is_inline() {
                             let key_span = get_key_span(key);
                             errors.report_error(

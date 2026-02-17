@@ -165,7 +165,7 @@ impl core::fmt::Display for Error {
 }
 
 #[cfg(feature = "std")]
-impl std::error::Error for Error {}
+impl core::error::Error for Error {}
 #[cfg(not(feature = "std"))]
 #[cfg(feature = "serde")]
 impl serde_core::de::StdError for Error {}

@@ -3,7 +3,7 @@ use std::iter::FromIterator;
 use snapbox::assert_data_eq;
 use snapbox::prelude::*;
 use snapbox::str;
-use toml_edit_v1::{array, table, value, DocumentMut, Item, Key, Table, Value};
+use toml_edit_v1::{DocumentMut, Item, Key, Table, Value, array, table, value};
 
 macro_rules! parse_key {
     ($s:expr) => {{

@@ -22,12 +22,12 @@ mod ser_to_string_pretty;
 mod spanned;
 
 use serde_spanned::Spanned;
-use toml_edit_v1::de::from_str;
-use toml_edit_v1::ser::to_string;
-use toml_edit_v1::ser::to_string_pretty;
 use toml_edit_v1::Date;
 use toml_edit_v1::Datetime;
 use toml_edit_v1::Time;
+use toml_edit_v1::de::from_str;
+use toml_edit_v1::ser::to_string;
+use toml_edit_v1::ser::to_string_pretty;
 
 use toml_types::Table as SerdeDocument;
 use toml_types::Table as SerdeTable;
