@@ -1,8 +1,8 @@
 use serde_spanned::Spanned;
 
 use crate::alloc_prelude::*;
-use crate::de::parser::prelude::*;
 use crate::de::DeString;
+use crate::de::parser::prelude::*;
 
 /// ```bnf
 /// key = simple-key / dotted-key

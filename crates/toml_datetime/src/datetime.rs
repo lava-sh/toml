@@ -397,8 +397,8 @@ impl FromStr for Datetime {
                         .what("date")
                         .expected("month between 01 and 12"));
                 }
-                let is_leap_year =
-                    (date.year % 4 == 0) && ((date.year % 100 != 0) || (date.year % 400 == 0));
+                let is_leap_year = date.year.is_multiple_of(4)
+                    && (!date.year.is_multiple_of(100) || date.year.is_multiple_of(400));
                 let (max_days_in_month, expected_day) = match date.month {
                     2 if is_leap_year => (29, "day between 01 and 29"),
                     2 => (28, "day between 01 and 28"),
@@ -763,7 +763,7 @@ impl fmt::Display for DatetimeParseError {
 }
 
 #[cfg(feature = "std")]
-impl std::error::Error for DatetimeParseError {}
+impl core::error::Error for DatetimeParseError {}
 #[cfg(all(not(feature = "std"), feature = "serde"))]
 impl serde_core::de::StdError for DatetimeParseError {}
 

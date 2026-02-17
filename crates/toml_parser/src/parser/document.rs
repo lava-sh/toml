@@ -3,6 +3,9 @@ use winnow::stream::Stream as _;
 use winnow::stream::TokenSlice;
 
 use super::EventReceiver;
+use crate::ErrorSink;
+use crate::Expected;
+use crate::ParseError;
 #[cfg(feature = "debug")]
 use crate::debug::DebugErrorSink;
 #[cfg(feature = "debug")]
@@ -10,9 +13,6 @@ use crate::debug::DebugEventReceiver;
 use crate::decoder::Encoding;
 use crate::lexer::Token;
 use crate::lexer::TokenKind;
-use crate::ErrorSink;
-use crate::Expected;
-use crate::ParseError;
 
 /// Parse lexed tokens into [`Event`][super::Event]s
 pub fn parse_document(
@@ -747,12 +747,12 @@ fn on_scalar(
                         break;
                     }
                     TokenKind::Whitespace => {
-                        if let Some(second) = tokens.get(1) {
-                            if second.kind() == TokenKind::Atom {
-                                span = span.append(second.span());
-                                let _ = tokens.next_slice(2);
-                                continue;
-                            }
+                        if let Some(second) = tokens.get(1)
+                            && second.kind() == TokenKind::Atom
+                        {
+                            span = span.append(second.span());
+                            let _ = tokens.next_slice(2);
+                            continue;
                         }
                         break;
                     }

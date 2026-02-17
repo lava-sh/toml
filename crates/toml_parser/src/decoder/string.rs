@@ -4,17 +4,17 @@ use winnow::stream::ContainsToken as _;
 use winnow::stream::Offset as _;
 use winnow::stream::Stream as _;
 
+use crate::ErrorSink;
+use crate::Expected;
+use crate::ParseError;
+use crate::Raw;
+use crate::Span;
 use crate::decoder::StringBuilder;
 use crate::lexer::APOSTROPHE;
 use crate::lexer::ML_BASIC_STRING_DELIM;
 use crate::lexer::ML_LITERAL_STRING_DELIM;
 use crate::lexer::QUOTATION_MARK;
 use crate::lexer::WSCHAR;
-use crate::ErrorSink;
-use crate::Expected;
-use crate::ParseError;
-use crate::Raw;
-use crate::Span;
 
 const ALLOCATION_ERROR: &str = "could not allocate for string";
 
@@ -116,45 +116,112 @@ pub(crate) fn decode_ml_literal_string<'i>(
     const INVALID_STRING: &str = "invalid multi-line literal string";
     output.clear();
 
-    let s = raw.as_str();
-    let s = if let Some(stripped) = s.strip_prefix(ML_LITERAL_STRING_DELIM) {
-        stripped
-    } else {
-        error.report_error(
-            ParseError::new(INVALID_STRING)
-                .with_context(Span::new_unchecked(0, raw.len()))
-                .with_expected(&[Expected::Literal("'")])
-                .with_unexpected(Span::new_unchecked(0, 0)),
-        );
-        s
-    };
-    let s = strip_start_newline(s);
-    let s = if let Some(stripped) = s.strip_suffix(ML_LITERAL_STRING_DELIM) {
-        stripped
-    } else {
-        error.report_error(
-            ParseError::new(INVALID_STRING)
-                .with_context(Span::new_unchecked(0, raw.len()))
-                .with_expected(&[Expected::Literal("'")])
-                .with_unexpected(Span::new_unchecked(raw.len(), raw.len())),
-        );
-        s.trim_end_matches('\'')
+    let raw = raw.as_str();
+
+    let s = match raw.strip_prefix(ML_LITERAL_STRING_DELIM) {
+        Some(v) => v,
+        None => {
+            error.report_error(
+                ParseError::new(INVALID_STRING)
+                    .with_context(Span::new_unchecked(0, raw.len()))
+                    .with_expected(&[Expected::Literal("'")])
+                    .with_unexpected(Span::new_unchecked(0, 0)),
+            );
+            raw
+        }
     };
 
-    for (i, b) in s.as_bytes().iter().enumerate() {
-        if *b == b'\'' || *b == b'\n' {
-        } else if *b == b'\r' {
-            if s.as_bytes().get(i + 1) != Some(&b'\n') {
-                let offset = (&s.as_bytes()[i + 1..]).offset_from(&raw.as_bytes());
+    let s = strip_start_newline(s);
+
+    let s = match s.strip_suffix(ML_LITERAL_STRING_DELIM) {
+        Some(v) => v,
+        None => {
+            error.report_error(
+                ParseError::new(INVALID_STRING)
+                    .with_context(Span::new_unchecked(0, raw.len()))
+                    .with_expected(&[Expected::Literal("'")])
+                    .with_unexpected(Span::new_unchecked(raw.len(), raw.len())),
+            );
+            s.trim_end_matches('\'')
+        }
+    };
+
+    let bytes = s.as_bytes();
+    let base = (s.as_ptr() as usize).wrapping_sub(raw.as_ptr() as usize);
+
+    if !bytes.contains(&b'\r') {
+        for (i, &b) in bytes.iter().enumerate() {
+            if b == b'\'' || b == b'\n' {
+                continue;
+            }
+            if !MLL_CHAR.contains_token(&b) {
+                let off = base + i;
                 error.report_error(
-                    ParseError::new("carriage return must be followed by newline")
+                    ParseError::new(INVALID_STRING)
                         .with_context(Span::new_unchecked(0, raw.len()))
-                        .with_expected(&[Expected::Literal("\n")])
-                        .with_unexpected(Span::new_unchecked(offset, offset)),
+                        .with_expected(&[Expected::Description("non-single-quote characters")])
+                        .with_unexpected(Span::new_unchecked(off, off)),
                 );
             }
-        } else if !MLL_CHAR.contains_token(b) {
-            let offset = (&s.as_bytes()[i..]).offset_from(&raw.as_bytes());
+        }
+
+        if !output.push_str(s) {
+            error.report_error(
+                ParseError::new(ALLOCATION_ERROR)
+                    .with_unexpected(Span::new_unchecked(0, raw.len())),
+            );
+        }
+        return;
+    }
+
+    let mut last = 0usize;
+    let mut i = 0usize;
+
+    while i < bytes.len() {
+        let b = bytes[i];
+
+        if b == b'\'' || b == b'\n' {
+            i += 1;
+            continue;
+        }
+
+        if b == b'\r' {
+            if last < i && !output.push_str(&s[last..i]) {
+                error.report_error(
+                    ParseError::new(ALLOCATION_ERROR)
+                        .with_unexpected(Span::new_unchecked(0, raw.len())),
+                );
+            }
+
+            // CRLF -> LF
+            if i + 1 < bytes.len() && bytes[i + 1] == b'\n' {
+                if !output.push_str("\n") {
+                    let off = base + i;
+                    error.report_error(
+                        ParseError::new(ALLOCATION_ERROR)
+                            .with_unexpected(Span::new_unchecked(off, off + 2)),
+                    );
+                }
+                i += 2;
+                last = i;
+                continue;
+            }
+
+            let off = base + i + 1;
+            error.report_error(
+                ParseError::new("carriage return must be followed by newline")
+                    .with_context(Span::new_unchecked(0, raw.len()))
+                    .with_expected(&[Expected::Literal("\n")])
+                    .with_unexpected(Span::new_unchecked(off, off)),
+            );
+
+            i += 1;
+            last = i;
+            continue;
+        }
+
+        if !MLL_CHAR.contains_token(&b) {
+            let offset = base + i;
             error.report_error(
                 ParseError::new(INVALID_STRING)
                     .with_context(Span::new_unchecked(0, raw.len()))
@@ -162,9 +229,11 @@ pub(crate) fn decode_ml_literal_string<'i>(
                     .with_unexpected(Span::new_unchecked(offset, offset)),
             );
         }
+
+        i += 1;
     }
 
-    if !output.push_str(s) {
+    if last < s.len() && !output.push_str(&s[last..]) {
         error.report_error(
             ParseError::new(ALLOCATION_ERROR).with_unexpected(Span::new_unchecked(0, raw.len())),
         );
@@ -471,6 +540,7 @@ pub(crate) fn decode_ml_basic_string<'i>(
             ParseError::new(ALLOCATION_ERROR).with_unexpected(Span::new_unchecked(0, raw.len())),
         );
     }
+
     while !s.is_empty() {
         if s.starts_with("\\") {
             let _ = s.next_token();
@@ -491,8 +561,15 @@ pub(crate) fn decode_ml_basic_string<'i>(
                 }
             }
         } else if s.starts_with("\r") {
-            let offset = if s.starts_with("\r\n") {
-                "\r\n".len()
+            if s.starts_with("\r\n") {
+                let _ = s.next_slice(2);
+                if !output.push_str("\n") {
+                    let start = s.offset_from(&raw.as_str()) - 2;
+                    error.report_error(
+                        ParseError::new(ALLOCATION_ERROR)
+                            .with_unexpected(Span::new_unchecked(start, start + 2)),
+                    );
+                }
             } else {
                 let start = s.offset_from(&raw.as_str()) + 1;
                 error.report_error(
@@ -501,20 +578,7 @@ pub(crate) fn decode_ml_basic_string<'i>(
                         .with_expected(&[Expected::Literal("\n")])
                         .with_unexpected(Span::new_unchecked(start, start)),
                 );
-                "\r".len()
-            };
-            #[cfg(feature = "unsafe")]
-            // SAFETY: Newlines ensure `offset` is along UTF-8 boundary
-            let newline = unsafe { s.next_slice_unchecked(offset) };
-            #[cfg(not(feature = "unsafe"))]
-            let newline = s.next_slice(offset);
-            if !output.push_str(newline) {
-                let start = newline.offset_from(&raw.as_str());
-                let end = start + newline.len();
-                error.report_error(
-                    ParseError::new(ALLOCATION_ERROR)
-                        .with_unexpected(Span::new_unchecked(start, end)),
-                );
+                let _ = s.next_slice(1);
             }
         } else {
             let invalid = mlb_invalid(&mut s);
@@ -540,89 +604,102 @@ pub(crate) fn decode_ml_basic_string<'i>(
     }
 }
 
+#[inline(always)]
+fn advance(stream: &mut &str, offset: usize) {
+    #[cfg(feature = "unsafe")]
+    unsafe {
+        // SAFETY: BASIC_UNESCAPED ensure `offset` is along UTF-8 boundary
+        stream.next_slice_unchecked(offset);
+    }
+    #[cfg(not(feature = "unsafe"))]
+    {
+        stream.next_slice(offset);
+    }
+}
+
 /// ```bnf
 /// mlb-escaped-nl = escape ws newline *( wschar / newline )
 /// ```
 fn mlb_escaped_nl(stream: &mut &str, raw: Raw<'_>, error: &mut dyn ErrorSink) {
     const INVALID_STRING: &str = "invalid multi-line basic string";
+
+    let raw = raw.as_str();
+    let ptr = raw.as_ptr() as usize;
+
     let ws_offset = stream
         .as_bytes()
         .offset_for(|b| !WSCHAR.contains_token(b))
         .unwrap_or(stream.len());
-    #[cfg(feature = "unsafe")] // SAFETY: WSCHAR ensure `offset` is along UTF-8 boundary
-    unsafe {
-        stream.next_slice_unchecked(ws_offset);
-    }
-    #[cfg(not(feature = "unsafe"))]
-    stream.next_slice(ws_offset);
 
-    let start = stream.checkpoint();
-    match stream.next_token() {
-        Some('\n') => {}
-        Some('\r') => {
-            if stream.as_bytes().first() == Some(&b'\n') {
-                let _ = stream.next_token();
+    advance(stream, ws_offset);
+
+    let bytes = stream.as_bytes();
+    if bytes.is_empty() {
+        let off = (stream.as_ptr() as usize).wrapping_sub(ptr);
+        error.report_error(
+            ParseError::new(INVALID_STRING)
+                .with_context(Span::new_unchecked(0, raw.len()))
+                .with_expected(&[Expected::Literal("\n")])
+                .with_unexpected(Span::new_unchecked(off, off)),
+        );
+        return;
+    }
+
+    match bytes[0] {
+        b'\n' => advance(stream, 1),
+        b'\r' => {
+            if bytes.get(1) == Some(&b'\n') {
+                advance(stream, 2);
             } else {
-                let start = stream.offset_from(&raw.as_str());
-                let end = start;
+                advance(stream, 1);
+                let off = (stream.as_ptr() as usize).wrapping_sub(ptr);
                 error.report_error(
                     ParseError::new("carriage return must be followed by newline")
                         .with_context(Span::new_unchecked(0, raw.len()))
                         .with_expected(&[Expected::Literal("\n")])
-                        .with_unexpected(Span::new_unchecked(start, end)),
+                        .with_unexpected(Span::new_unchecked(off, off)),
                 );
             }
         }
         _ => {
-            stream.reset(&start);
-
-            let start = stream.offset_from(&raw.as_str());
-            let end = start;
+            let start = (stream.as_ptr() as usize).wrapping_sub(ptr);
             error.report_error(
                 ParseError::new(INVALID_STRING)
                     .with_context(Span::new_unchecked(0, raw.len()))
                     .with_expected(&[Expected::Literal("\n")])
-                    .with_unexpected(Span::new_unchecked(start, end)),
+                    .with_unexpected(Span::new_unchecked(start, start)),
             );
+            return;
         }
     }
 
     loop {
-        let start_offset = stream.offset_from(&raw.as_str());
+        let start_offset = stream.len();
 
         let offset = stream
             .as_bytes()
             .offset_for(|b| !(WSCHAR, b'\n').contains_token(b))
             .unwrap_or(stream.len());
-        #[cfg(feature = "unsafe")] // SAFETY: WSCHAR ensure `offset` is along UTF-8 boundary
-        unsafe {
-            stream.next_slice_unchecked(offset);
-        }
-        #[cfg(not(feature = "unsafe"))]
-        stream.next_slice(offset);
 
-        if stream.starts_with("\r") {
-            let offset = if stream.starts_with("\r\n") {
-                "\r\n".len()
+        advance(stream, offset);
+
+        if stream.as_bytes().first() == Some(&b'\r') {
+            let bytes = stream.as_bytes();
+            if bytes.get(1) == Some(&b'\n') {
+                advance(stream, 2);
             } else {
-                let start = stream.offset_from(&raw.as_str()) + 1;
+                let start = (stream.as_ptr() as usize).wrapping_sub(ptr) + 1;
                 error.report_error(
                     ParseError::new("carriage return must be followed by newline")
                         .with_context(Span::new_unchecked(0, raw.len()))
                         .with_expected(&[Expected::Literal("\n")])
                         .with_unexpected(Span::new_unchecked(start, start)),
                 );
-                "\r".len()
-            };
-            #[cfg(feature = "unsafe")]
-            // SAFETY: Newlines ensure `offset` is along UTF-8 boundary
-            let _ = unsafe { stream.next_slice_unchecked(offset) };
-            #[cfg(not(feature = "unsafe"))]
-            let _ = stream.next_slice(offset);
+                advance(stream, 1);
+            }
         }
 
-        let end_offset = stream.offset_from(&raw.as_str());
-        if start_offset == end_offset {
+        if stream.len() == start_offset {
             break;
         }
     }

@@ -1,11 +1,11 @@
+use crate::Item;
+use crate::RawString;
+use crate::Value;
 use crate::key::Key;
 use crate::parser::key::on_key;
 use crate::parser::prelude::*;
 use crate::parser::value::value;
 use crate::repr::Decor;
-use crate::Item;
-use crate::RawString;
-use crate::Value;
 use crate::{ArrayOfTables, Document, Table};
 
 /// ```bnf
@@ -394,27 +394,26 @@ impl State {
             let root = &mut self.root;
             if let (Some(parent_table), Some(key)) =
                 (descend_path(root, &header.path, false, errors), &header.key)
+                && let Some((old_key, old_value)) = parent_table.remove_entry(key.get())
             {
-                if let Some((old_key, old_value)) = parent_table.remove_entry(key.get()) {
-                    match old_value {
-                        Item::Table(t) if t.implicit && !t.is_dotted() => {
-                            self.current_table = t;
-                        }
-                        // Since tables cannot be defined more than once, redefining such tables using a [table] header is not allowed. Likewise, using dotted keys to redefine tables already defined in [table] form is not allowed.
-                        old_value => {
-                            let old_span = old_key.span().expect("all items have spans");
-                            let old_span =
-                                toml_parser::Span::new_unchecked(old_span.start, old_span.end);
-                            let key_span = get_key_span(key).expect("all keys have spans");
-                            errors.report_error(
-                                ParseError::new("duplicate key")
-                                    .with_unexpected(key_span)
-                                    .with_context(old_span),
-                            );
+                match old_value {
+                    Item::Table(t) if t.implicit && !t.is_dotted() => {
+                        self.current_table = t;
+                    }
+                    // Since tables cannot be defined more than once, redefining such tables using a [table] header is not allowed. Likewise, using dotted keys to redefine tables already defined in [table] form is not allowed.
+                    old_value => {
+                        let old_span = old_key.span().expect("all items have spans");
+                        let old_span =
+                            toml_parser::Span::new_unchecked(old_span.start, old_span.end);
+                        let key_span = get_key_span(key).expect("all keys have spans");
+                        errors.report_error(
+                            ParseError::new("duplicate key")
+                                .with_unexpected(key_span)
+                                .with_context(old_span),
+                        );
 
-                            if let Item::Table(t) = old_value {
-                                self.current_table = t;
-                            }
+                        if let Item::Table(t) = old_value {
+                            self.current_table = t;
                         }
                     }
                 }
@@ -466,7 +465,7 @@ fn descend_path<'t>(
             }
             crate::Entry::Occupied(entry) => {
                 match entry.into_mut() {
-                    Item::ArrayOfTables(ref mut array) => {
+                    Item::ArrayOfTables(array) => {
                         debug_assert!(!array.is_empty());
 
                         let index = array.len() - 1;
@@ -474,7 +473,7 @@ fn descend_path<'t>(
 
                         last_child
                     }
-                    Item::Table(ref mut sweet_child_of_mine) => {
+                    Item::Table(sweet_child_of_mine) => {
                         // Since tables cannot be defined more than once, redefining such tables using a
                         // [table] header is not allowed. Likewise, using dotted keys to redefine tables
                         // already defined in [table] form is not allowed.
@@ -487,7 +486,7 @@ fn descend_path<'t>(
                         }
                         sweet_child_of_mine
                     }
-                    Item::Value(ref existing) => {
+                    &mut Item::Value(ref existing) => {
                         let old_span = existing.span().expect("all items have spans");
                         let old_span =
                             toml_parser::Span::new_unchecked(old_span.start, old_span.end);
