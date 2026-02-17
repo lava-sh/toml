@@ -578,7 +578,7 @@ pub(crate) fn decode_ml_basic_string<'i>(
                     );
                 }
             } else {
-                let start = s.offset_from(&raw.as_str()) + 1;
+                let start = s.offset_from(&raw.as_str());
                 error.report_error(
                     ParseError::new("carriage return must be followed by newline")
                         .with_context(Span::new_unchecked(0, raw.len()))
