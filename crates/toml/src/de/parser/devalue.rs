@@ -16,9 +16,10 @@ pub type DeString<'i> = Cow<'i, str>;
 
 /// Represents a TOML integer
 #[derive(Clone, Debug)]
+#[allow(missing_docs)]
 pub struct DeInteger<'i> {
-    pub(crate) inner: DeString<'i>,
-    pub(crate) radix: u32,
+    pub inner: DeString<'i>,
+    pub radix: u32,
 }
 
 impl DeInteger<'_> {
@@ -80,8 +81,9 @@ impl core::fmt::Display for DeInteger<'_> {
 
 /// Represents a TOML integer
 #[derive(Clone, Debug)]
+#[allow(missing_docs)]
 pub struct DeFloat<'i> {
-    pub(crate) inner: DeString<'i>,
+    pub inner: DeString<'i>,
 }
 
 impl DeFloat<'_> {
