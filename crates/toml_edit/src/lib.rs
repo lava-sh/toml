@@ -92,7 +92,8 @@ mod raw_string;
 mod repr;
 mod table;
 mod value;
-
+#[cfg(feature = "parse")]
+pub use crate::parser::parse_key_path;
 #[cfg(feature = "serde")]
 pub mod de;
 #[cfg(feature = "serde")]

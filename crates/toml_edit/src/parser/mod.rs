@@ -64,7 +64,8 @@ pub(crate) fn parse_key(
     }
 }
 
-pub(crate) fn parse_key_path(
+#[allow(missing_docs)]
+pub fn parse_key_path(
     source: toml_parser::Source<'_>,
     errors: &mut dyn prelude::ErrorSink,
 ) -> Vec<crate::Key> {
