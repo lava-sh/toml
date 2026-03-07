@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.0.6] - 2026-03-06
+
+### Fixes
+
+- Revert the change from 1.0.5 due to error quality regressions
+
+## [1.0.5] - 2026-03-06
+
+### Fixes
+
+- Report the full dotted key for a value's key's span
+
+## [1.0.4] - 2026-03-04
+
+### Fixes
+
+- Error when parsing a table that extends a dotted table that extended an implicit table
+
 ## [1.0.3] - 2026-02-18
 
 ### Fixes
@@ -471,7 +489,10 @@ Changes:
 Minor doc fix (#409)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.0.3...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.0.6...HEAD
+[1.0.6]: https://github.com/toml-rs/toml/compare/toml-v1.0.5...toml-v1.0.6
+[1.0.5]: https://github.com/toml-rs/toml/compare/toml-v1.0.4...toml-v1.0.5
+[1.0.4]: https://github.com/toml-rs/toml/compare/toml-v1.0.3...toml-v1.0.4
 [1.0.3]: https://github.com/toml-rs/toml/compare/toml-v1.0.2...toml-v1.0.3
 [1.0.2]: https://github.com/toml-rs/toml/compare/toml-v1.0.1...toml-v1.0.2
 [1.0.1]: https://github.com/toml-rs/toml/compare/toml-v1.0.0...toml-v1.0.1
