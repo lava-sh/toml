@@ -3,7 +3,8 @@ mod decoder;
 #[cfg(all(feature = "parse", feature = "display", feature = "serde"))]
 fn main() {
     let valid_ext = {
-        let path = std::path::Path::new("tests/fixtures/valid/ext/table/append-with-dotted-keys-1.toml");
+        let path =
+            std::path::Path::new("tests/fixtures/valid/ext/table/append-with-dotted-keys-1.toml");
         let name = path
             .strip_prefix("tests/fixtures")
             .unwrap()
