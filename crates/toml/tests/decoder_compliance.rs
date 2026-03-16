@@ -2,6 +2,23 @@ mod decoder;
 
 #[cfg(all(feature = "parse", feature = "display", feature = "serde"))]
 fn main() {
+    let valid_ext = {
+        let path =
+            std::path::Path::new("tests/fixtures/valid/ext/table/append-with-dotted-keys-1.toml");
+        let name = path
+            .strip_prefix("tests/fixtures")
+            .unwrap()
+            .to_owned()
+            .into();
+        let fixture = std::fs::read(path).unwrap().into();
+        let expected = std::fs::read(path.with_extension("json")).unwrap().into();
+        vec![toml_test_data::Valid {
+            name,
+            fixture,
+            expected,
+        }]
+    };
+
     let invalid_ext = walkdir::WalkDir::new("tests/fixtures/invalid")
         .sort_by_file_name()
         .into_iter()
@@ -24,6 +41,7 @@ fn main() {
     harness.version("1.0.0");
     harness.ignore([]).unwrap();
     harness.snapshot_root("tests/snapshots");
+    harness.extend_valid(valid_ext);
     harness.extend_invalid(invalid_ext);
     harness.test();
 }
