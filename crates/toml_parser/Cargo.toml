@@ -1,6 +1,6 @@
 [package]
 name = "toml_parser"
-version = "1.0.9+spec-1.1.0"
+version = "1.0.10+spec-1.1.0"
 description = "Yet another format-preserving TOML parser."
 categories = ["encoding", "parser-implementations", "parsing", "config"]
 keywords = ["encoding", "toml", "no_std"]
@@ -35,7 +35,7 @@ debug = ["std", "dep:anstream", "dep:anstyle"]
 [dependencies]
 anstream = { version = "0.6.20", optional = true }
 anstyle = { version = "1.0.11", optional = true }
-winnow = { version = "0.7.13", default-features = false }
+winnow = { version = "1.0.0", default-features = false }
 
 [dev-dependencies]
 anstream = { version = "0.6.20", features = ["test"] }

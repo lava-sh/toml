@@ -836,7 +836,7 @@ dependencies = [
  "serde-untagged",
  "serde_core",
  "serde_derive",
- "toml 1.0.6+spec-1.1.0",
+ "toml 1.0.7+spec-1.1.0",
 ]
 
 [[package]]
@@ -945,7 +945,7 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "1.0.6+spec-1.1.0"
+version = "1.0.7+spec-1.1.0"
 dependencies = [
  "anstream 0.6.20",
  "anstyle",
@@ -1011,14 +1011,14 @@ dependencies = [
  "serde_json",
  "serde_spanned",
  "toml 0.5.11",
- "toml 1.0.6+spec-1.1.0",
+ "toml 1.0.7+spec-1.1.0",
  "toml_edit",
  "toml_parser",
 ]
 
 [[package]]
 name = "toml_datetime"
-version = "1.0.0+spec-1.1.0"
+version = "1.0.1+spec-1.1.0"
 dependencies = [
  "serde_core",
  "snapbox 1.1.0",
@@ -1026,7 +1026,7 @@ dependencies = [
 
 [[package]]
 name = "toml_edit"
-version = "0.25.4+spec-1.1.0"
+version = "0.25.5+spec-1.1.0"
 dependencies = [
  "anstream 0.6.20",
  "anstyle",
@@ -1038,7 +1038,7 @@ dependencies = [
  "serde_json",
  "serde_spanned",
  "snapbox 1.1.0",
- "toml 1.0.6+spec-1.1.0",
+ "toml 1.0.7+spec-1.1.0",
  "toml-test-data",
  "toml-test-harness",
  "toml_datetime",
@@ -1058,7 +1058,7 @@ dependencies = [
 
 [[package]]
 name = "toml_parser"
-version = "1.0.9+spec-1.1.0"
+version = "1.0.10+spec-1.1.0"
 dependencies = [
  "anstream 0.6.20",
  "anstyle",
@@ -1069,7 +1069,7 @@ dependencies = [
 
 [[package]]
 name = "toml_writer"
-version = "1.0.6+spec-1.1.0"
+version = "1.0.7+spec-1.1.0"
 dependencies = [
  "proptest",
  "snapbox 1.1.0",
@@ -1300,9 +1300,9 @@ checksum = "271414315aff87387382ec3d271b52d7ae78726f5d44ac98b4f4030c91880486"
 
 [[package]]
 name = "winnow"
-version = "0.7.13"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf"
+checksum = "a90e88e4667264a994d34e6d1ab2d26d398dcdca8b7f52bec8668957517fc7d8"
 dependencies = [
  "memchr",
 ]
