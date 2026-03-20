@@ -82,6 +82,10 @@ harness = false
 name = "encoder_pretty_compliance"
 harness = false
 
+[[test]]
+name = "external_parser_api"
+required-features = ["parse"]
+
 [[example]]
 name = "decode"
 required-features = ["parse", "display", "serde"]

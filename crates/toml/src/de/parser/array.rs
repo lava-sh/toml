@@ -13,7 +13,7 @@ use crate::de::parser::prelude::*;
 /// array-values =  ws-comment-newline val ws-comment-newline array-sep array-values
 /// array-values =/ ws-comment-newline val ws-comment-newline [ array-sep ]
 /// ```
-pub(crate) fn on_array<'i>(
+pub fn on_array<'i>(
     open_event: &toml_parser::parser::Event,
     input: &mut Input<'_>,
     source: toml_parser::Source<'i>,

@@ -8,7 +8,7 @@ use crate::de::DeString;
 /// key = simple-key / dotted-key
 /// dotted-key = simple-key 1*( dot-sep simple-key )
 /// ```
-pub(crate) fn on_key<'i>(
+pub fn on_key<'i>(
     key_event: &toml_parser::parser::Event,
     input: &mut Input<'_>,
     source: toml_parser::Source<'i>,
