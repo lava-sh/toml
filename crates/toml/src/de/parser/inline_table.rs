@@ -15,7 +15,7 @@ use crate::map::Entry;
 ///
 /// inline-table = inline-table-open [ inline-table-keyvals ] ws-comment-newline inline-table-close
 /// ```
-pub(crate) fn on_inline_table<'i>(
+pub fn on_inline_table<'i>(
     open_event: &toml_parser::parser::Event,
     input: &mut Input<'_>,
     source: toml_parser::Source<'i>,

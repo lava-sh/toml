@@ -11,7 +11,7 @@ use crate::de::DeValue;
 /// ```abnf
 /// val = string / boolean / array / inline-table / date-time / float / integer
 /// ```
-pub(crate) fn value<'i>(
+pub fn value<'i>(
     input: &mut Input<'_>,
     source: toml_parser::Source<'i>,
     errors: &mut dyn ErrorSink,
@@ -61,7 +61,7 @@ pub(crate) fn value<'i>(
     Spanned::new(0..0, DeValue::Integer(Default::default()))
 }
 
-pub(crate) fn on_scalar<'i>(
+pub fn on_scalar<'i>(
     event: &toml_parser::parser::Event,
     source: toml_parser::Source<'i>,
     errors: &mut dyn ErrorSink,
