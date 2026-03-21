@@ -4,7 +4,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![cfg_attr(all(not(feature = "std"), not(test)), no_std)]
-#![warn(missing_docs)]
+#![allow(missing_docs)]
 #![warn(clippy::std_instead_of_core)]
 #![warn(clippy::std_instead_of_alloc)]
 // Makes rustc abort compilation if there are any unsafe blocks in the crate.

@@ -19,7 +19,7 @@ use crate::map::Entry;
 ///                ( ws table ws [ comment ] ) /
 ///                  ws )
 /// ```
-pub(crate) fn document<'i>(
+pub fn document<'i>(
     input: &mut Input<'_>,
     source: toml_parser::Source<'i>,
     errors: &mut dyn ErrorSink,
@@ -338,7 +338,7 @@ impl<'i> State<'i> {
     }
 }
 
-fn descend_path<'t, 'i>(
+pub fn descend_path<'t, 'i>(
     mut table: &'t mut DeTable<'i>,
     path: &[Spanned<DeString<'i>>],
     dotted: bool,
@@ -453,7 +453,7 @@ fn descend_path<'t, 'i>(
     Some(table)
 }
 
-fn get_key_span(key: &Spanned<DeString<'_>>) -> toml_parser::Span {
+pub fn get_key_span(key: &Spanned<DeString<'_>>) -> toml_parser::Span {
     let key_span = key.span();
     toml_parser::Span::new_unchecked(key_span.start, key_span.end)
 }
