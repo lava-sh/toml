@@ -9,7 +9,7 @@
 mod deserializer;
 mod error;
 #[cfg(feature = "parse")]
-mod parser;
+pub mod parser;
 
 #[cfg(feature = "parse")]
 #[cfg(feature = "serde")]
