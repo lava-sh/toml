@@ -85,15 +85,15 @@ pub fn parse_value<'i>(source: Source<'i>, errors: &mut dyn ErrorSink) -> Spanne
 const LIMIT: u32 = 80;
 
 pub(crate) mod prelude {
-    pub(crate) use toml_parser::parser::EventKind;
     pub(crate) use toml_parser::ErrorSink;
     pub(crate) use toml_parser::ParseError;
+    pub(crate) use toml_parser::parser::EventKind;
     pub(crate) use winnow::stream::Stream as _;
 
     pub(crate) type Input<'i> = super::Input<'i>;
 
     #[cfg(feature = "debug")]
-    pub(crate) use super::debug::trace;
-    #[cfg(feature = "debug")]
     pub(crate) use super::debug::TraceScope;
+    #[cfg(feature = "debug")]
+    pub(crate) use super::debug::trace;
 }

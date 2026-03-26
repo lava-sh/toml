@@ -3,7 +3,7 @@ use std::iter::FromIterator;
 use snapbox::assert_data_eq;
 use snapbox::prelude::*;
 use snapbox::str;
-use toml_edit::{array, table, value, DocumentMut, Item, Key, Table, Value};
+use toml_edit::{DocumentMut, Item, Key, Table, Value, array, table, value};
 
 macro_rules! parse_key {
     ($s:expr) => {{
@@ -1680,4 +1680,192 @@ tool = { typst-test.tests = "tests" }
 
 "#]]
     );
+}
+
+#[test]
+fn array_of_tables_insert_at_beginning() {
+    given(
+        r#"[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "banana"
+"#,
+    )
+    .running(|root| {
+        let array = root["fruit"].as_array_of_tables_mut().unwrap();
+        let mut new_table = Table::new();
+        new_table.insert("name", value("cherry"));
+        array.insert(0, new_table);
+        // The previously-first table (now at index 1) had no leading blank line
+        // from parsing; fix it up so it separates properly.
+        array.get_mut(1).unwrap().decor_mut().set_prefix("\n");
+    })
+    .produces_display(str![[r#"
+[[fruit]]
+name = "cherry"
+
+[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "banana"
+
+"#]]);
+}
+
+#[test]
+fn array_of_tables_insert_in_middle() {
+    given(
+        r#"[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "banana"
+"#,
+    )
+    .running(|root| {
+        let array = root["fruit"].as_array_of_tables_mut().unwrap();
+        let mut new_table = Table::new();
+        new_table.insert("name", value("cherry"));
+        // Give the new table a leading blank line to match the existing style.
+        new_table.decor_mut().set_prefix("\n");
+        array.insert(1, new_table);
+    })
+    .produces_display(str![[r#"
+[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "cherry"
+
+[[fruit]]
+name = "banana"
+
+"#]]);
+}
+
+#[test]
+fn array_of_tables_insert_at_end() {
+    given(
+        r#"[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "banana"
+"#,
+    )
+    .running(|root| {
+        let array = root["fruit"].as_array_of_tables_mut().unwrap();
+        let mut new_table = Table::new();
+        new_table.insert("name", value("cherry"));
+        // Give the new table a leading blank line to match the existing style.
+        new_table.decor_mut().set_prefix("\n");
+        array.insert(2, new_table);
+    })
+    .produces_display(str![[r#"
+[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "banana"
+
+[[fruit]]
+name = "cherry"
+
+"#]]);
+}
+
+#[test]
+#[should_panic]
+fn array_of_tables_insert_out_of_bounds() {
+    let mut array = toml_edit::ArrayOfTables::new();
+    let t = Table::new();
+    array.insert(1, t);
+}
+
+#[test]
+fn inline_table_to_table_with_comment() {
+    given(
+        r#"
+# hello i'm a comment
+foo = { bar = 1 }
+"#,
+    )
+    .running(|root| {
+        let mut new_foo = Table::new();
+        new_foo.insert("bar", Item::Value(1.into()));
+        new_foo.insert("baz", Item::Value(2.into()));
+        *root.get_mut("foo").unwrap() = Item::Table(new_foo);
+    })
+    .produces_display(str![[r#"
+
+# hello i'm a comment
+[foo]
+bar = 1
+baz = 2
+
+"#]]);
+}
+
+#[test]
+fn inline_table_to_array_of_tables_with_comment() {
+    given(
+        r#"
+# hello i'm a comment
+foo = [{ bar = 1 }]
+"#,
+    )
+    .running(|root| {
+        let mut new_foo_entry = Table::new();
+        new_foo_entry.insert("bar", Item::Value(1.into()));
+        new_foo_entry.insert("baz", Item::Value(2.into()));
+        let mut arr = toml_edit::ArrayOfTables::new();
+        arr.push(new_foo_entry);
+        *root.get_mut("foo").unwrap() = Item::ArrayOfTables(arr);
+    })
+    .produces_display(str![[r#"
+
+# hello i'm a comment
+[[foo]]
+bar = 1
+baz = 2
+
+"#]]);
+}
+
+#[test]
+fn array_of_tables_replace() {
+    given(
+        r#"[[fruit]]
+name = "apple"
+
+# tropical
+[[fruit]]
+name = "banana"
+"#,
+    )
+    .running(|root| {
+        let array = root["fruit"].as_array_of_tables_mut().unwrap();
+        let mut new_table = Table::new();
+        new_table.insert("name", value("cherry"));
+        let old = array.replace(1, new_table);
+        assert_eq!(old["name"].as_str(), Some("banana"));
+    })
+    .produces_display(str![[r#"
+[[fruit]]
+name = "apple"
+
+[[fruit]]
+name = "cherry"
+
+"#]]);
+}
+
+#[test]
+#[should_panic]
+fn array_of_tables_replace_out_of_bounds() {
+    let mut array = toml_edit::ArrayOfTables::new();
+    let t = Table::new();
+    array.replace(0, t);
 }
