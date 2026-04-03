@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.1.2] - 2026-04-01
+
+### Fixes
+
+- *(parser)* For unquoted keys, report a span over all contiguous invalid characters, rather than insertion points before each byte
+
+## [1.1.1] - 2026-03-31
+
+### Fixes
+
+- *(parser)* Remove stack overflow with *many* `=` in a row
+- *(parser)* Remove stack overflow with *many* `+` / `-` in a row
+
 ## [1.1.0] - 2026-03-23
 
 ### Compatibility
@@ -501,7 +514,9 @@ Changes:
 Minor doc fix (#409)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.1.0...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.1.2...HEAD
+[1.1.2]: https://github.com/toml-rs/toml/compare/toml-v1.1.1...toml-v1.1.2
+[1.1.1]: https://github.com/toml-rs/toml/compare/toml-v1.1.0...toml-v1.1.1
 [1.1.0]: https://github.com/toml-rs/toml/compare/toml-v1.0.7...toml-v1.1.0
 [1.0.7]: https://github.com/toml-rs/toml/compare/toml-v1.0.6...toml-v1.0.7
 [1.0.6]: https://github.com/toml-rs/toml/compare/toml-v1.0.5...toml-v1.0.6

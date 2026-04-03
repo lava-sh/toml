@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [0.25.10] - 2026-04-01
+
+### Fixes
+
+- *(parser)* For unquoted keys, report a span over all contiguous invalid characters, rather than insertion points before each byte
+
+## [0.25.9] - 2026-03-31
+
+### Features
+
+- Add `ArrayOfTables::replace`
+
+### Fixes
+
+- *(parser)* Remove stack overflow with *many* `=` in a row
+- *(parser)* Remove stack overflow with *many* `+` / `-` in a row
+
+### Performance
+
+- *(serde)* Reduce allocations on deserialization
+- Reduce allocations on TOML writing
+
 ## [0.25.8] - 2026-03-23
 
 ### Fixes
@@ -975,7 +997,9 @@ This release was sponsored by Futurewei
 - `array.push` now returns a `Result`.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/v0.25.8...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/v0.25.10...HEAD
+[0.25.10]: https://github.com/toml-rs/toml/compare/v0.25.9...v0.25.10
+[0.25.9]: https://github.com/toml-rs/toml/compare/v0.25.8...v0.25.9
 [0.25.8]: https://github.com/toml-rs/toml/compare/v0.25.7...v0.25.8
 [0.25.7]: https://github.com/toml-rs/toml/compare/v0.25.6...v0.25.7
 [0.25.6]: https://github.com/toml-rs/toml/compare/v0.25.5...v0.25.6
