@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [0.25.13] - 2026-07-14
+
+### Fixes
+
+- Don't overflow when writing a string with more than 255 quotes in a row
+
 ## [0.25.12] - 2026-05-27
 
 ### Fixes
@@ -1009,7 +1015,8 @@ This release was sponsored by Futurewei
 - `array.push` now returns a `Result`.
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/v0.25.12...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/v0.25.13...HEAD
+[0.25.13]: https://github.com/toml-rs/toml/compare/v0.25.12...v0.25.13
 [0.25.12]: https://github.com/toml-rs/toml/compare/v0.25.11...v0.25.12
 [0.25.11]: https://github.com/toml-rs/toml/compare/v0.25.10...v0.25.11
 [0.25.10]: https://github.com/toml-rs/toml/compare/v0.25.9...v0.25.10
