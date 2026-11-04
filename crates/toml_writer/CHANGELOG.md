@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.2.0] - 2026-11-04
+
+### Performance
+
+- Speed up writing of syntax
+- Speed up writing of strings
+- Speed up writing of keys
+
 ## [1.1.3] - 2026-10-08
 
 ## [1.1.2] - 2026-07-14
@@ -80,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 Initial release
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/toml_writer-v1.1.3...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/toml_writer-v1.2.0...HEAD
+[1.2.0]: https://github.com/toml-rs/toml/compare/toml_writer-v1.1.3...toml_writer-v1.2.0
 [1.1.3]: https://github.com/toml-rs/toml/compare/toml_writer-v1.1.2...toml_writer-v1.1.3
 [1.1.2]: https://github.com/toml-rs/toml/compare/toml_writer-v1.1.1...toml_writer-v1.1.2
 [1.1.1]: https://github.com/toml-rs/toml/compare/toml_writer-v1.1.0...toml_writer-v1.1.1

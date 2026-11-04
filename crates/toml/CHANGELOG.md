@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 
+## [1.2.0] - 2026-11-04
+
+### Performance
+
+- *(ser)* Pre-allocate serialization buffer
+- *(ser)* Speed up writing of syntax
+- *(ser)* Speed up writing of strings
+- *(ser)* Speed up writing of keys
+- *(ser)* Reuse key allocations
+- *(ser)* Only allocate per-table serialization buffers when needed (keys and tables are intermixed)
+
 ## [1.1.8] - 2026-10-09
 
 ### Fixes
@@ -554,7 +565,8 @@ Changes:
 Minor doc fix (#409)
 
 <!-- next-url -->
-[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.1.8...HEAD
+[Unreleased]: https://github.com/toml-rs/toml/compare/toml-v1.2.0...HEAD
+[1.2.0]: https://github.com/toml-rs/toml/compare/toml-v1.1.8...toml-v1.2.0
 [1.1.8]: https://github.com/toml-rs/toml/compare/toml-v1.1.7...toml-v1.1.8
 [1.1.7]: https://github.com/toml-rs/toml/compare/toml-v1.1.6...toml-v1.1.7
 [1.1.6]: https://github.com/toml-rs/toml/compare/toml-v1.1.5...toml-v1.1.6
